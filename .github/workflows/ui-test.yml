@@ -3,6 +3,9 @@ name: Android UI Tests
 on:
   pull_request:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: android-ui-${{ github.ref }}
