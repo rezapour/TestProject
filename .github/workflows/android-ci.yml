@@ -57,12 +57,12 @@ jobs:
             **/build/test-results/testDebugUnitTest/**
           retention-days: 7
 
-        - name: Upload APKs
-          if: success()
-          uses: actions/upload-artifact@v4
-          with:
-            name: app-artifacts
-            path: |
+      - name: Upload APKs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+           name: app-artifacts
+           path: |
                 **/build/outputs/apk/**/*.apk
                 **/build/outputs/bundle/**/*.aab
-            retention-days: 7
+           retention-days: 7
