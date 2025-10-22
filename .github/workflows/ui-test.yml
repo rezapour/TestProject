@@ -36,7 +36,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-  
+
 
       - name: Start emulator & run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
