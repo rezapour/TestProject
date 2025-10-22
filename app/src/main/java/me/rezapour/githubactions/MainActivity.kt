@@ -16,6 +16,7 @@ import me.rezapour.githubactions.ui.theme.GithubActionsTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //hello
         enableEdgeToEdge()
         setContent {
             GithubActionsTheme {
