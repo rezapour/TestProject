@@ -8,7 +8,7 @@ on:
     branches: [main]
 
   workflow_dispatch:
-    
+
 
 jobs:
   say-hello:
@@ -20,3 +20,22 @@ jobs:
 
       - name: Say hello
         run: echo "Hello, Android CI"
+
+  show-date:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@4
+
+      - name: Show Date
+        run: date
+
+  show-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show branch name
+        run: echo "Branch: ${{ github.ref_name }}"
