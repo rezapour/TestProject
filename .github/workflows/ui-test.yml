@@ -35,19 +35,18 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # ✨ Start emulator, wait for boot, then run tests
+      # ✅ Let the action boot & wait for the emulator, then run the tests.
       - name: Run emulator and connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 34
-          target: google_apis
+          api-level: 33              # try 33 first; switch to 34 after it’s green
+          target: default            # 'default' is often less flaky than 'google_apis'
           arch: x86_64
           profile: pixel_6
+          force-avd-creation: true
+          disable-animations: true
+          emulator-options: -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
           script: |
-            adb devices
-            adb shell settings put global window_animation_scale 0
-            adb shell settings put global transition_animation_scale 0
-            adb shell settings put global animator_duration_scale 0
             ./gradlew connectedDebugAndroidTest --stacktrace
 
       # 📎 Upload test reports & screenshots
