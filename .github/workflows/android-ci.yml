@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) Set up Java (LTS). If your AGP supports it, prefer 21; otherwise use 17.
+      # 2) Set up Java (LTS). If your AGP supports it, prefer 21;otherwise use 17.
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
@@ -42,7 +42,6 @@ jobs:
           packages: |
             platforms;android-36
             build-tools;36.0.0
-            platform-tools
 
       - name: Assemble & Unit Test
         run: ./gradlew clean assembleDebug testDebugUnitTest --stacktrace
