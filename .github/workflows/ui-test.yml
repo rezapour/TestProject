@@ -3,9 +3,6 @@ name: Android UI Tests
 on:
   pull_request:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 concurrency:
   group: android-ui-${{ github.ref }}
@@ -13,14 +10,18 @@ concurrency:
 
 jobs:
   ui-tests:
-    runs-on: ubuntu-latest   # Easiest path for stable emulators
-
-    permissions:
-      contents: read
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Enable KVM for hardware acceleration (mandatory on Ubuntu)
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Set up JDK
         uses: actions/setup-java@v5
@@ -35,30 +36,23 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+  
 
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      # ✅ Let the action boot & wait for the emulator, then run the tests.
-      - name: Run emulator and connected tests
+      - name: Start emulator & run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 33              # try 33 first; switch to 34 after it’s green
-          target: default            # 'default' is often less flaky than 'google_apis'
+          api-level: 33
+          target: default
           arch: x86_64
           profile: pixel_6
           force-avd-creation: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          emulator-options: -no-snapshot -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
-          script: |
-            ./gradlew connectedDebugAndroidTest --stacktrace
+          # If your Gradle root is in a subfolder, uncomment the next line:
+          # working-directory: ./android
+          script: ./gradlew connectedDebugAndroidTest --stacktrace
 
-      # 📎 Upload test reports & screenshots
       - name: Upload instrumentation reports
         if: always()
         uses: actions/upload-artifact@v4
