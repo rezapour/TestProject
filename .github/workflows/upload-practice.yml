@@ -12,9 +12,6 @@ jobs:
       - name: Check the path
         run: pwd
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Checkthe path
         run: pwd
 
