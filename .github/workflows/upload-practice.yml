@@ -12,6 +12,8 @@ jobs:
       - name: Check the path
         run: pwd
 
+      - name: Checkout the code
+        uses: actions/checkout@v4
 
       - name: Check files
         run: ls
