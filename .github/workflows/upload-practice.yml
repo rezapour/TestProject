@@ -12,6 +12,10 @@ jobs:
       - name: Check the path
         run: pwd
 
+
+      - name: Check files
+        run: ls
+
       - name: Checkthe path
         run: pwd
 
