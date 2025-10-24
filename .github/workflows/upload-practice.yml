@@ -1,0 +1,31 @@
+name: Practice Uploade
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  buildTest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the path
+        run: pwd
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkthe path
+        run: pwd
+
+      - name: Prepair file
+        run: echo "this is a test file" > testText.txt
+
+      - name: upload file
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: textfile
+          path: |
+           testText.txt
+          retention-days: 7
