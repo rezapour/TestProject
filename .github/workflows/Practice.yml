@@ -1,0 +1,17 @@
+name: HelloPractice
+
+on:
+  workflow_dispatch:
+
+jobs:
+  testPractice:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: practice print
+        run: echo "Hello Hello"
+
