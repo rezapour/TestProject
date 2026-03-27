@@ -14,11 +14,5 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v6
 
-      - name: setUp jdk
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: build with grdale
-        run: ./gradlew assembleDebug
+      - name: Check android SDK
+        run: echo $ANDROID_SDK_ROOT
