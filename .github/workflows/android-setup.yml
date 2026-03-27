@@ -1,0 +1,35 @@
+name: Android-setup
+
+on:
+  pull_request:
+    branches: [ main,develop ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v6
+
+      - name: setup jdk
+        uses: actions/setup-java@v4
+        with:
+          version: '17'
+          distribution: 'temurin'
+
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug
