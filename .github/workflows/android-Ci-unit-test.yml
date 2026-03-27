@@ -1,0 +1,35 @@
+name: android Ci unit test
+
+on:
+  pull_request:
+    branches: [ main,develop ]
+
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v6
+
+      - name: setup jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew test
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        if: always()    # ← Upload even if tests fail!
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/
